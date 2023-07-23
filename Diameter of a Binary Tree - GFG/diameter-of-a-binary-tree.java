@@ -115,6 +115,17 @@ class GfG {
     }
 }*/
 
+
+class Pair<F, S> {
+    F first;
+    S second;
+
+    public Pair(F first, S second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+
 class Solution {
     
     int max(int a,int b){
@@ -122,6 +133,17 @@ class Solution {
             return a;
         }
         return b;
+    }
+    
+    int findHeight(Node root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftHeight = findHeight(root.left);
+        int rightHeight = findHeight(root.right);
+
+        return Math.max(leftHeight, rightHeight) + 1;
     }
     
     int height(Node node) 
@@ -139,20 +161,42 @@ class Solution {
         return ans;
     }
     
+    Pair<Integer, Integer> findDiameter(Node root) {
+        if (root == null) {
+            return new Pair<>(0, 0);
+        }
+
+        Pair<Integer, Integer> leftSubtree = findDiameter(root.left);
+        Pair<Integer, Integer> rightSubtree = findDiameter(root.right);
+
+        int height = Math.max(leftSubtree.first, rightSubtree.first) + 1;
+        int diameter = Math.max(leftSubtree.first + rightSubtree.first, Math.max(leftSubtree.second, rightSubtree.second));
+
+        return new Pair<>(height, diameter);
+    }
+    
     // Function to return the diameter of a Binary Tree.
     int diameter(Node root) {
         // Your code here
-        
+        /*recursive method
         if(root == null){
             return 0;
         }
+        
         
         int op1 = diameter(root.left);
         int op2 = diameter(root.right);
         int op3 = height(root.left) + height(root.right) + 1;
         
-        int ans = max(op1,max(op2,op3));
+        int ans = max(op1,max(op2,op3));*/
         
-        return ans;
+        if (root == null) {
+            return 0;
+        }
+
+        Pair<Integer, Integer> result = findDiameter(root);
+        return result.second+1;
+        
+        //return ans;
     }
 }
